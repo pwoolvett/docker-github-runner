@@ -1,5 +1,15 @@
 # GitHub Runner
 
+## FORK META:
+
+Differences with upstream:
+
+* Use nvidia-l4t as base image, for arm devices (eg Jetson)
+* Use github actions instead of dockerhub to publish
+* Publish in github container registry instead of dockerhub
+* Let `docker-compose` handle volumes for runner caches
+* Remove `make` and `build`(for dockerhub) to use `docker-compose`
+
 [![Docker Pulls](https://img.shields.io/docker/pulls/tcardonne/github-runner)](https://hub.docker.com/r/tcardonne/github-runner)
 
 -----------

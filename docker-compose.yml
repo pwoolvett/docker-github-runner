@@ -1,12 +1,44 @@
 version: "3.7"
 
+x-runner-base: &runner-base
+    image: ghcr.io/pwoolvett/github-runner
+    build:
+      context: docker
+      args: 
+        FROM: nvcr.io/nvidia/l4t-base:r32.4.4
+    environment:
+      - RUNNER_NAME
+      - RUNNER_WORK_DIRECTORY
+      - RUNNER_TOKEN
+      - RUNNER_REPOSITORY_URL
+      - RUNNER_LABELS
+      - RUNNER_ALLOW_RUNASROOT
+      - GITHUB_ACCESS_TOKEN
+      - AGENT_TOOLSDIRECTORY
+      - DISPLAY
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+      - /tmp/.X11-unix/:/tmp/.X11-unix
+      - /mnt/nvme/docker:/var/lib/docker
+      - aptcache:/var/cache/apt
+      - homecache:$HOME/.cache/
+      - toolscache:$AGENT_TOOLSDIRECTORY
+    network_mode: host
+    runtime: nvidia
+
 services:
-    runner:
-      image: tcardonne/github-runner:latest
-      environment:
-        RUNNER_NAME: "my-runner"
-        RUNNER_REPOSITORY_URL: ${RUNNER_REPOSITORY_URL}
-        #RUNNER_ORGANIZATION_URL: ${RUNNER_ORGANIZATION_URL}
-        GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
+
+  runner:
+    <<: *runner-base
+
+  shell:
+    <<: *runner-base
+    command: bash
+
+
+
+volumes:
+  aptcache:
+  homecache:
+  toolscache:
