@@ -3,6 +3,8 @@ FROM ${FROM}
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG GIT_VERSION="2.26.2"
+ARG RUNNER_OS
+ARG RUNNER_ARCH
 ARG GH_RUNNER_VERSION
 ARG DOCKER_COMPOSE_VERSION="1.27.4"
 
@@ -75,9 +77,11 @@ RUN mkdir -p /home/runner ${AGENT_TOOLSDIRECTORY}
 WORKDIR /home/runner
 
 RUN GH_RUNNER_VERSION=${GH_RUNNER_VERSION:-$(curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | grep tag_name | sed -E 's/.*"v([^"]+)".*/\1/')} \
-    && curl -L -O https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
-    && tar -zxf actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
-    && rm -f actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
+    && RUNNER_FILE=actions-runner-${RUNNER_OS}-${RUNNER_ARCH}-${GH_RUNNER_VERSION}.tar.gz \
+    && RUNNER_URL=https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/${RUNNER_FILE} \
+    && curl -L -O ${RUNNER_FILE} \
+    && tar -zxf ${RUNNER_FILE} \
+    && rm -f ${RUNNER_FILE} \
     && ./bin/installdependencies.sh \
     && chown -R root: /home/runner \
     && rm -rf /var/lib/apt/lists/* \

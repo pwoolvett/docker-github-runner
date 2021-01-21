@@ -53,6 +53,8 @@ jobs:
         with:
           build-args:
             FROM=nvcr.io/nvidia/l4t-base:r32.4.4
+            RUNNER_OS=linux
+            RUNNER_ARCH=arm64
           context: docker
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max

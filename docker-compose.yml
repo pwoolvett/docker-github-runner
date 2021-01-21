@@ -5,7 +5,9 @@ x-runner-base: &runner-base
     build:
       context: docker
       args: 
-        FROM: nvcr.io/nvidia/l4t-base:r32.4.4
+        - FROM=nvcr.io/nvidia/l4t-base:r32.4.4
+        - RUNNER_OS=linux
+        - RUNNER_ARCH=arm64
     environment:
       - RUNNER_NAME
       - RUNNER_WORK_DIRECTORY
