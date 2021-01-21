@@ -79,7 +79,7 @@ WORKDIR /home/runner
 RUN GH_RUNNER_VERSION=${GH_RUNNER_VERSION:-$(curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | grep tag_name | sed -E 's/.*"v([^"]+)".*/\1/')} \
     && RUNNER_FILE=actions-runner-${RUNNER_OS}-${RUNNER_ARCH}-${GH_RUNNER_VERSION}.tar.gz \
     && RUNNER_URL=https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/${RUNNER_FILE} \
-    && curl -L -O ${RUNNER_FILE} \
+    && curl -L -O ${RUNNER_FILE} ${RUNNER_URL} \
     && tar -zxf ${RUNNER_FILE} \
     && rm -f ${RUNNER_FILE} \
     && ./bin/installdependencies.sh \
