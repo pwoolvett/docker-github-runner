@@ -56,8 +56,12 @@ jobs:
             RUNNER_OS=linux
             RUNNER_ARCH=arm64
           context: docker
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+          cache-from: |
+            type=local,src=/tmp/.buildx-cache
+            type=registry,ref=ghcr.io/${{ github.repository }}
+          cache-to: |
+            type=local,dest=/tmp/.buildx-cache,mode=max
+            type=registry,ref=ghcr.io/${{ github.repository }}
           platforms: linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
