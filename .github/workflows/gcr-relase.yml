@@ -61,7 +61,6 @@ jobs:
             type=registry,ref=ghcr.io/${{ github.repository }}
           cache-to: |
             type=local,dest=/tmp/.buildx-cache,mode=max
-            type=registry,ref=ghcr.io/${{ github.repository }}
           platforms: linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
