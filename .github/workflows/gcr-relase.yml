@@ -24,7 +24,8 @@ jobs:
 
       - name: Define final image name
         run: |
-          export MATRIX_BASE=${{ matrix.base_image }} \
+          export MATRIX_BASE_RAW=${{ matrix.base_image }} \
+          && export MATRIX_BASE=${MATRIX_BASE_RAW//:/_} \
           && echo "IMAGE_NAME=ghcr.io/${{ github.repository }}-${MATRIX_BASE##*/}" >> $GITHUB_ENV
 
       - name: Login to GitHub Container Registry
