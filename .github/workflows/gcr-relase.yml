@@ -13,6 +13,13 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       include:
+         - base_image: nvcr.io/nvidia/l4t-base:r32.4.4
+           arch: arm64
+         - base_image: nvcr.io/nvidia/deepstream-l4t:5.0.1-20.09-samples
+           arch: arm64
     steps:
 
       - name: Login to GitHub Container Registry
@@ -52,9 +59,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           build-args: |
-            FROM=nvcr.io/nvidia/l4t-base:r32.4.4
+            FROM=${{ matrix.base_image }}
             RUNNER_OS=linux
-            RUNNER_ARCH=arm64
+            RUNNER_ARCH=${{ matrix.arch }}
           context: docker
           cache-from: |
             type=local,src=/tmp/.buildx-cache
